@@ -35,6 +35,7 @@ fi
 if (not_there root $checkfile);
 then          
   cd $SIMPATH/tools/root
+  mkdir build_for_fair
 
   # special patch for Fedora 16 on 32bit
   # This should go into root
@@ -60,10 +61,10 @@ then
 
   if [ "$build_for_grid" = "yes" ]
   then
-    cp ../rootconfig_grid.sh  rootconfig.sh
+    cp ../rootconfig_grid.sh  build_for_fair/rootconfig.sh
     echo "Copied rootconfig_grid.sh ......................" | tee -a $logfile
   else
-    cp ../rootconfig.sh  .
+    cp ../rootconfig.sh  build_for_fair/
     echo "Copied rootconfig.sh ......................" | tee -a $logfile
   fi
   echo "Configure Root .........................................." | tee -a $logfile
@@ -106,6 +107,7 @@ then
   # needed due to some problem with the ALICE HLT code
   patch -p0 < ../root5_34_19_hlt.patch    
 
+  cd build_for_fair/
   . rootconfig.sh
 
   #This workaround  to run make in a loop is
@@ -115,7 +117,7 @@ then
   #restarting the make process the compilation passes the 
   #problematic file and may crash at a differnt point. 
   #If there are more than 10 crashes the script is stoped
-  
+
   if [ "$compiler" = "intel" ];
   then
     counter=0
@@ -170,7 +172,7 @@ then
     fi
   fi
 
-  cd $SIMPATH/tools/root
+  cd $SIMPATH/tools/root/build_for_fair/
 
   $MAKE_command install
 

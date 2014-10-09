@@ -7,7 +7,7 @@
      if [ "$compiler" = "Clang" -a "$arch" = "linux" ]; then
        debugstring=""
      else
-       debugstring="--build=debug"
+       debugstring="-DCMAKE_BUILD_TYPE=Debug"
      fi
    else
      debugstring=""
@@ -17,7 +17,7 @@
    gcc_minor_version=$(gcc -dumpversion | cut -c 3)
    if [ $gcc_major_version -ge 4 -a $gcc_minor_version -ge 3 ];
    then
-      XROOTD="--disable-xrootd"
+      XROOTD="-Dxrootd=OFF"
    else
       XROOTD=" "
     fi
@@ -25,15 +25,15 @@
 
    OPENGL=" "
    if [ "$compiler" = "Clang" ]; then
-     root_comp_flag="--with-clang"
+     root_comp_flag="-DCMAKE_C_COMPILER=Clang -DCMAKE_CXXCOMPILER=Clang"
      if [ $haslibcxx ]; then
-       root_comp_flag="--with-clang --enable-cxx11 --enable-libcxx"
+       root_comp_flag="-DCMAKE_C_COMPILER=Clang -DCMAKE_CXXCOMPILER=Clang -Dcxx11=ON -Dlibcxx=ON"
      fi
      if [ "$platform" = "linux" ]; then
-       OPENGL="--with-opengl-incdir=$SIMPATH_INSTALL/include --with-opengl-libdir=$SIMPATH_INSTALL/lib"
+       OPENGL="-DOPENGL_INCLUDE_DIR=$SIMPATH_INSTALL/include -DOPENGL_gl_LIBRARY=$SIMPATH_INSTALL/lib"
      fi
    else
-     root_comp_flag="--with-cc=$CC --with-cxx=$CXX --with-ld=$CXX"   
+     root_comp_flag="-DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_LINKER=$CXX"   
    fi
 
    ########### Roofit has problems with gcc3.3.5  
@@ -45,12 +45,12 @@
    then
       ROOFIT=" "
    else
-      ROOFIT="--enable-roofit"
+      ROOFIT="-Droofit=ON"
     fi
 
    if [ "$build_python" = "yes" ];
    then
-      PYTHONBUILD="--enable-python"
+      PYTHONBUILD="-Dpython=ON"
    else   
       PYTHONBUILD=" "
    fi
@@ -61,22 +61,22 @@
      pythia8_libdir=$SIMPATH_INSTALL/lib
      pythia8_incdir=$SIMPATH_INSTALL/include
      gsl_dir=$SIMPATH_INSTALL
-     etc_string="--etcdir=$SIMPATH_INSTALL/share/root/etc"
-     prefix_string="--prefix=$install_prefix"
+     etc_string="-DCMAKE_INSTALL_SYSCONFDIR=$SIMPATH_INSTALL/share/root/etc"
+     prefix_string="-DCMAKE_INSTALL_PREFIX=$install_prefix"
  
-   ./configure $arch  --enable-soversion $PYTHONBUILD $XROOTD  $ROOFIT \
-                    --enable-minuit2  --enable-gdml --enable-xml \
-		    --enable-builtin-ftgl --enable-builtin-glew \
-                    --enable-builtin-freetype $OPENGL \
-		    --with-pythia6-libdir=$pythia6_libdir \
-		    --with-pythia8-libdir=$pythia8_libdir \
-		    --with-pythia8-incdir=$pythia8_incdir \
-		    --enable-mysql --enable-pgsql \
-                    --disable-globus \
-                    --disable-reflex \
-                    --disable-cintex \
-                    --enable-vc --enable-http \
-                    --with-gsl-incdir=$gsl_dir/include \
-                    --with-gsl-libdir=$gsl_dir/lib \
-                    --with-f77=$FC $root_comp_flag $prefix_string \
-                    $etc_string $debugstring 
+     cmake ../ -Dsoversion=ON $PYTHONBUILD $XROOTD  $ROOFIT \
+                    -Dminuit2=ON  -Dgdml=ON -Dxml=ON \
+		    -Dbuiltin-ftgl=ON -Dbuiltin-glew=ON \
+                    -Dbuiltin-freetype=ON $OPENGL \
+		    -DPYTHIA6_LIBRARY=$pythia6_libdir \
+		    -DPYTHIA8_LIBRARY=$pythia8_libdir \
+		    -DPYTHIA8_INCLUDE_DIR=$pythia8_incdir \
+		    -Dmysql=ON -Dpgsql=ON \
+                    -Dglobus=OFF \
+                    -Dreflex=OFF \
+                    -Dcintex=OFF \
+                    -Dvc=ON -Dhttp=ON \
+                    -DGSL_DIR=$gsl_dir \
+                    -DCMAKE_F_COMPILER=$FC $root_comp_flag $prefix_string \
+                    $etc_string -Dgnuinstall=ON $debugstring
+
