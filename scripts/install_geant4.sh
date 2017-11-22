@@ -85,6 +85,9 @@ then
         -DCMAKE_CXX_COMPILER=$CXX \
         -DCMAKE_C_COMPILER=$CC \
         -DGEANT4_USE_G3TOG4=ON \
+        -DG4MULTITHREADED=ON \
+        -DGEANT4_BUILD_MULTITHREADED=ON \
+        -DGEANT4_BUILD_TLS_MODEL:STRING="global-dynamic"  \
         -DGEANT4_BUILD_STORE_TRAJECTORY=OFF \
         -DGEANT4_BUILD_VERBOSE_CODE=ON \
         $geant4_opengl \

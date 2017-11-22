@@ -32,8 +32,8 @@ export MESA_LOCATION="ftp://ftp.freedesktop.org/pub/mesa/older-versions/7.x/7.10
 export MESAVERSION=MesaLib-7.10.3
 
 export GEANT4_LOCATION="http://geant4.cern.ch/support/source/"
-export GEANT4VERSION=geant4.10.02.p01
-export GEANT4VERSIONp=Geant4-10.2.1
+export GEANT4VERSION=geant4.10.03.p02
+export GEANT4VERSIONp=Geant4-10.3.2
 
 #export ROOT_LOCATION="http://root.cern.ch/git/root.git"
 export ROOT_LOCATION="https://github.com/root-project/root"
@@ -58,8 +58,8 @@ export VGM_LOCATION="http://svn.code.sf.net/p/vgm/code/tags/"
 export VGMVERSION=v4-3
 export VGMDIR=VGM-4.3.0
 
-export GEANT4VMC_LOCATION="http://root.cern.ch/git/geant4_vmc.git"
-export GEANT4VMCBRANCH=v3-3
+export GEANT4VMC_LOCATION="https://github.com/vmc-project/geant4_vmc.git"
+export GEANT4VMCBRANCH=v3-5
 
 export MILLEPEDE_LOCATION="http://svnsrv.desy.de/public/MillepedeII/tags/"
 export MILLEPEDE_VERSION=V04-03-04
